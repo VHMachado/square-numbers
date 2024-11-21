@@ -1,5 +1,5 @@
 import math
-from prettytable import PrettyTable
+from prettytable import PrettyTable, SINGLE_BORDER
 
 def ask_number():
     return int(input("Insert a square number: "))
@@ -33,4 +33,6 @@ for i in range(0, len(unformatted_list), interval):
 table = PrettyTable()
 table.add_rows(formatted_list)
 table.hrules = True
+table.set_style(SINGLE_BORDER)
+table.header=False
 print(table)
