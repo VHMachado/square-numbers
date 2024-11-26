@@ -1,5 +1,8 @@
 import math
 from prettytable import PrettyTable, SINGLE_BORDER
+import pandas as pd
+import os
+from PIL import Image, ImageDraw, ImageFont
 
 def ask_number():
     return int(input("Insert a square number: "))
@@ -48,12 +51,37 @@ while True:
 
         table = draw_table(formatted_list)
 
-        print("Save to text?")
-        save_to_text = input("(Y)es or (N)o?\n")
-        if save_to_text == "y" or "Y":
-            text = table.get_string()
-            with open("text.txt", "w", encoding="utf-8") as f: f.write(text)
-        elif save_to_text == "n" or "N":
+        print("Would you like to save the table to a file?")
+        save_table = input("(Y)es or (N)o?\n")
+        if save_table == "y" or "Y":
+            print("Which file format would you like to save the table?\nType in the desired option")
+            option = input("(1) text\n(2) csv\n(3) excel\n(4) image\n\nAnswer: ")
+            match option:
+                case "1":
+                    with open("table.txt", "w", encoding="utf-8") as f: f.write(table.get_string())
+
+                case "2": 
+                    with open("table.csv", "w", newline="" ,encoding="utf-8") as f: f.write(table.get_csv_string())
+
+                case "3":
+                    with open("table.csv", "w", newline="" ,encoding="utf-8") as f: f.write(table.get_csv_string())
+                    df = pd.read_csv("table.csv")
+                    df.to_excel("table.xlsx", index=False)
+                    os.remove("table.csv")
+
+                case "4":
+                    # im = Image.new("RGB", (500, 200), "white")
+                    # draw = ImageDraw.Draw(im)
+                    # font = ImageFont.truetype("FreeMono.ttf", 15)
+                    # draw.multiline_text((10, 10), table.get_string(), font=font, fill="black", align="left")
+
+                    # im.show()
+                    # im.save("table.png")
+                    pass
+
+            print("The file was saved succesfully. Check the program's folder to find it")
+
+        elif save_table == "n" or "N":
             pass
         else:
             print("Invalid response")
