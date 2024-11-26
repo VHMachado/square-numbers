@@ -4,9 +4,11 @@ from prettytable import PrettyTable, SINGLE_BORDER
 def ask_number():
     return int(input("Insert a square number: "))
 
-def check_square_number(x):
-    x = math.sqrt(x)
-    return x.is_integer()
+def get_x_root(x):
+    return math.sqrt(x)
+
+def check_square_number(x_root):
+    return x_root.is_integer()
 
 def make_numbers_list(x):
     return list(range(1,x+1))
@@ -14,25 +16,39 @@ def make_numbers_list(x):
 def get_interval(x):
     return int(math.sqrt(x))
 
-x = ask_number()
-is_square = check_square_number(x)
+def format_list(unformatted_list, interval):
+    formatted_list = list()
+    for i in range(0, len(unformatted_list), interval):
+        formatted_list.append(unformatted_list[i:i+interval])
+    return formatted_list
 
-if is_square:
-    print("The number is a square number")
-else:
-    print("The number isn't a square number")
+def draw_table(formatted_list):
+    table = PrettyTable()
+    table.add_rows(formatted_list)
+    table.hrules = True
+    table.set_style(SINGLE_BORDER)
+    table.header=False
+    print(table)
 
-interval = get_interval(x)
+def calculate_closest_numbers(x_root):
+    return pow(int(x_root), 2), pow(int(x_root + 1), 2)
 
-unformatted_list = make_numbers_list(x)
-formatted_list = list()
+while True:
+    x = ask_number()
+    x_root = get_x_root(x)
+    is_square = check_square_number(x_root)
 
-for i in range(0, len(unformatted_list), interval):
-    formatted_list.append(unformatted_list[i:i+interval])
+    if is_square:
+        print("The number is a square number")
 
-table = PrettyTable()
-table.add_rows(formatted_list)
-table.hrules = True
-table.set_style(SINGLE_BORDER)
-table.header=False
-print(table)
+        interval = get_interval(x)
+        unformatted_list = make_numbers_list(x)
+        formatted_list = format_list(unformatted_list, interval)
+
+        draw_table(formatted_list)
+    else:
+        print("The number isn't a square number")
+        n1, n2 = calculate_closest_numbers(x_root)
+        print(f"The closest square numbers to the one you typed are {n1} and {n2}")
+
+    
