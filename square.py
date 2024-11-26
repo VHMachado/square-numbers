@@ -29,6 +29,7 @@ def draw_table(formatted_list):
     table.set_style(SINGLE_BORDER)
     table.header=False
     print(table)
+    return table
 
 def calculate_closest_numbers(x_root):
     return pow(int(x_root), 2), pow(int(x_root + 1), 2)
@@ -45,7 +46,17 @@ while True:
         unformatted_list = make_numbers_list(x)
         formatted_list = format_list(unformatted_list, interval)
 
-        draw_table(formatted_list)
+        table = draw_table(formatted_list)
+
+        print("Save to text?")
+        save_to_text = input("(Y)es or (N)o?\n")
+        if save_to_text == "y":
+            text = table.get_string()
+            with open("text.txt", "w", encoding="utf-8") as f: f.write(text)
+        elif save_to_text == "n":
+            pass
+        else:
+            print("Invalid response")
     else:
         print("The number isn't a square number")
         n1, n2 = calculate_closest_numbers(x_root)
