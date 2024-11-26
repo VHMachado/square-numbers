@@ -50,13 +50,14 @@ while True:
 
         print("Save to text?")
         save_to_text = input("(Y)es or (N)o?\n")
-        if save_to_text == "y":
+        if save_to_text == "y" or "Y":
             text = table.get_string()
             with open("text.txt", "w", encoding="utf-8") as f: f.write(text)
-        elif save_to_text == "n":
+        elif save_to_text == "n" or "N":
             pass
         else:
             print("Invalid response")
+            # Repeat if
     else:
         print("The number isn't a square number")
         n1, n2 = calculate_closest_numbers(x_root)
