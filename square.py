@@ -1,8 +1,7 @@
-import math
 from prettytable import PrettyTable, SINGLE_BORDER
-import pandas as pd
-import os
 from PIL import Image, ImageDraw, ImageFont
+import pandas as pd
+import math, os
 
 def ask_number():
     return int(input("Insert a square number: "))
@@ -55,7 +54,7 @@ while True:
         save_table = input("(Y)es or (N)o?\n")
         if save_table == "y" or "Y":
             print("Which file format would you like to save the table?\nType in the desired option")
-            option = input("(1) text\n(2) csv\n(3) excel\n(4) image\n\nAnswer: ")
+            option = input("(1) text\n(2) csv\n(3) excel\n(4) image\n\nType in your answer: ")
             match option:
                 case "1":
                     with open("table.txt", "w", encoding="utf-8") as f: f.write(table.get_string())
@@ -70,14 +69,34 @@ while True:
                     os.remove("table.csv")
 
                 case "4":
-                    # im = Image.new("RGB", (500, 200), "white")
-                    # draw = ImageDraw.Draw(im)
-                    # font = ImageFont.truetype("FreeMono.ttf", 15)
-                    # draw.multiline_text((10, 10), table.get_string(), font=font, fill="black", align="left")
+                    font_size = 15
+                    margin = 20
+                    text = table.get_string()
+                    font = ImageFont.truetype("consola.ttf", font_size)
 
-                    # im.show()
-                    # im.save("table.png")
-                    pass
+                    max_width = 0
+                    for line in text.splitlines():
+                        (width,_), (_,_) = font.font.getsize(line)
+                        max_width = max(max_width, width)
+                    max_width += margin * 2
+
+                    lines = len(text.splitlines())
+                    height = lines * font_size + margin * 3
+
+                    print("Which color scheme do you prefer?")
+                    option = input("(1) White background with black text\n(2) Black background with white text\nType in your answer: ")
+                    match option:
+                        case "1":
+                            im = Image.new("RGB", (max_width, height), "white")
+                            draw = ImageDraw.Draw(im)
+                            draw.multiline_text((20, 0), text, font=font, fill="black", align="left")
+                        case "2":
+                            im = Image.new("RGB", (max_width, height), "black")
+                            draw = ImageDraw.Draw(im)
+                            draw.multiline_text((20, 0), text, font=font, fill="white", align="left")
+
+                    im.show()
+                    im.save("table.png")
 
             print("The file was saved succesfully. Check the program's folder to find it")
 
